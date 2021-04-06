@@ -1,4 +1,3 @@
-class Checkout {
-}
+class Checkout {}
 
 export default Checkout;
