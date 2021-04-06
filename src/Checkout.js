@@ -49,7 +49,42 @@ class Checkout {
     cartCost() {
         let total = 0;
         Object.entries(this.cart).forEach(([item, units]) => {
-            total += this.store.itemsList[item] * units;
+            const buyNGetMAtXOff = this.store.buyNGetMAtXOff[item];
+            const buyNForX = this.store.buyNForX[item];
+            const cost = this.store.itemsList[item];
+            let currentUnits = units;
+            let currrentDiscountedItems = 0;
+            if (buyNGetMAtXOff) {
+                const N = buyNGetMAtXOff[0];
+                const M = buyNGetMAtXOff[1];
+                const X = buyNGetMAtXOff[2];
+                const limit = buyNGetMAtXOff[3];
+                while (currentUnits > 0) {
+                    if (
+                        currrentDiscountedItems < limit &&
+                        currentUnits >= N + M
+                    ) {
+                        total += N * cost;
+                        total += M * cost * (1 - X);
+                        currrentDiscountedItems += 1;
+                        currentUnits -= N + M;
+                    } else {
+                        total += cost * currentUnits;
+                        currentUnits = 0;
+                    }
+                }
+            } else if (buyNForX) {
+                const N = buyNForX[0];
+                const X = buyNForX[1];
+                const limit = buyNForX[2];
+                let discountedUnits = Math.floor(currentUnits / N);
+                discountedUnits =
+                    discountedUnits > limit ? limit : discountedUnits;
+                total += discountedUnits * X;
+                total += (currentUnits - discountedUnits) * cost;
+            } else {
+                total += cost * units;
+            }
         });
         return total;
     }

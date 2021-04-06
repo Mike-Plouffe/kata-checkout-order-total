@@ -8,7 +8,6 @@ class Store {
         this.itemsByWeight = new Set();
         this.buyNGetMAtXOff = {};
         this.buyNForX = {};
-        this.buyNGetMAtXOff = {};
         this.specialExistsForItem = new Set();
         this.setItem("soup", 1.89);
         this.setItem("beef", 5.99, true);

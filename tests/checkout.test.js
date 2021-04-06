@@ -86,13 +86,13 @@ describe("calculate the cost of a car with specials", () => {
         checkout.scan("beef", 11.5);
         checkout.store.createBuyNGetMAtXOff("beef", 3, 1, 0.2, 3);
         const cost = checkout.cartCost();
-        expect(cost).toBeCloseTo(8.5 * 5.99 + 3 * 5.99 * 0.8);
+        expect(cost).toBeCloseTo(9.5 * 5.99 + 2 * 5.99 * 0.8);
     });
     test("40 cans of soup with a Buy 3 get 1 free limit 6", () => {
         checkout.newCart();
         checkout.store.weeklyReset();
         checkout.scan("soup", 40);
-        checkout.store.createBuyNForX("soup", 2, 1, 6);
+        checkout.store.createBuyNForX("soup", 2, 0, 6);
         const cost = checkout.cartCost();
         expect(cost).toBeCloseTo(34 * 1.89);
     });
@@ -100,6 +100,11 @@ describe("calculate the cost of a car with specials", () => {
         checkout.store.setItem("soup", 0.2);
         checkout.store.createBuyNForX("soup", 2, 1, 6);
         const cost = checkout.cartCost();
-        expect(cost).toBeCloseTo(34 * 1.89);
+        expect(cost).toBeCloseTo(34 * 0.2);
+    });
+    test("after a weekly reset, it should go back to full price", () => {
+        checkout.store.weeklyReset();
+        const cost = checkout.cartCost();
+        expect(cost).toBeCloseTo(40 * 1.89);
     });
 });
