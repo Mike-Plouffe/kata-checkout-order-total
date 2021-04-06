@@ -39,16 +39,20 @@ describe("Scanning:", () => {
         checkout.remove("soup", 0.5);
         expect(checkout.cart.soup).toBeCloseTo(1);
     });
+    test("if partial units of non weighted items is sent, ignore the partials", () => {
+        checkout.scan("soup", 8.5);
+        expect(checkout.cart.soup).toBeCloseTo(9);
+    });
 });
 
-describe("calculate the cost of a cart with", () => {
+describe("calculate the cost of a cart with markdowns:", () => {
     const checkout = new Checkout();
 
     test("the cart initially is free", () => {
         const cost = checkout.cartCost();
         expect(cost).toBe(0);
     });
-    test("1.5lb beef, 2 cans soup, 2.5lb bananas", () => {
+    test("add 1.5lb beef, 2 cans soup, 2.5lb bananas", () => {
         checkout.scan("beef", 1.5);
         checkout.scan("soup");
         checkout.scan("soup");
@@ -56,7 +60,7 @@ describe("calculate the cost of a cart with", () => {
         const cost = checkout.cartCost();
         expect(cost).toBeCloseTo(1.5 * 5.99 + 2 * 1.89 + 2.5 * 2.38);
     });
-    test("after marking down soup it should be cheaper", () => {
+    test("mark down soup and it should be cheaper", () => {
         checkout.store.setItem("soup", 0.2);
         const cost = checkout.cartCost();
         expect(cost).toBeCloseTo(1.5 * 5.99 + 2 * 0.2 + 2.5 * 2.38);
@@ -67,3 +71,12 @@ describe("calculate the cost of a cart with", () => {
         expect(cost).toBeCloseTo(1.5 * 5.99 + 2 * 1.89 + 2.5 * 2.38);
     });
 });
+
+// describe('calculate the cost of a car with specials', () => {
+//     const checkout = new Checkout()
+//     test('8 cans soup with a Buy 2 Get 1 50% off limit 2 special', () => {
+//         checkout.scan('soup', 8.5)
+//         const cost = checkout.cartCost();
+//         expect(cost).toBeCloseTo(8 * 1.89)
+//     })
+// })

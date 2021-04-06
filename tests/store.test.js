@@ -28,22 +28,22 @@ describe("the cost with markdowns", () => {
     });
 });
 
-describe('adding specials', () => {
-    test('adding a Buy N get M at X% off', () => {
-        store.createBuyNGetMAtXOff('soup', 1, 1, 100, 2)
-        expect(store.buyNGetMAtXOff.soup).toEqual([1, 1, 100, 2])
-    })
-    test('adding a Buy N for X', () => {
+describe("adding specials", () => {
+    test("adding a Buy N get M at X% off", () => {
+        store.createBuyNGetMAtXOff("soup", 1, 1, 100, 2);
+        expect(store.buyNGetMAtXOff.soup).toEqual([1, 1, 100, 2]);
+    });
+    test("adding a Buy N for X", () => {
         store.weeklyReset();
-        store.createBuyNForX('soup', 3, 5, 1)
-        expect(store.buyNForX.soup).toEqual([3, 5, 1])
-    })
-    test('cannot create two specials of the same item', () => {
-        store.createBuyNForX('soup', 9, 9, 1)
-        expect(store.buyNForX.soup).toEqual([3, 5, 1])
-    })
-    test('adding a Buy N get M for X% off for weighted items', () => {
-        store.createBuyNGetMAtXOff('beef', 2, 1, 50, 1)
-        expect(store.buyNGetMAtXOff.beef).toEqual([2, 1, 50, 1])
-    })
-})
+        store.createBuyNForX("soup", 3, 5, 1);
+        expect(store.buyNForX.soup).toEqual([3, 5, 1]);
+    });
+    test("cannot create two specials of the same item", () => {
+        store.createBuyNForX("soup", 9, 9, 1);
+        expect(store.buyNForX.soup).toEqual([3, 5, 1]);
+    });
+    test("adding a Buy N get M for X% off for weighted items", () => {
+        store.createBuyNGetMAtXOff("beef", 2, 1, 50, 1);
+        expect(store.buyNGetMAtXOff.beef).toEqual([2, 1, 50, 1]);
+    });
+});

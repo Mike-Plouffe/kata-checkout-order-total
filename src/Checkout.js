@@ -14,28 +14,36 @@ class Checkout {
         if (!this.store.itemsList[item]) {
             return false;
         }
+        const fixedunits = this.editUnitsValueByWeighted(item, units);
         const current = this.cart[item];
         if (current) {
-            this.cart[item] = current + units;
+            this.cart[item] = current + fixedunits;
         } else {
-            this.cart[item] = units;
+            this.cart[item] = fixedunits;
         }
         return true;
     }
 
     remove(item, units = 1) {
         const current = this.cart[item];
+        const fixedunits = this.editUnitsValueByWeighted(item, units);
         let newunits = 0;
-        if (!this.store.itemsByWeight.has(item)) {
-            newunits = current - Math.floor(units);
-        } else {
-            newunits = current - units;
-        }
+        newunits = current - fixedunits;
         if (newunits > 0) {
             this.cart[item] = newunits;
         } else {
             delete this.cart[item];
         }
+    }
+
+    editUnitsValueByWeighted(item, units) {
+        let newunits = null;
+        if (!this.store.itemsByWeight.has(item)) {
+            newunits = Math.floor(units);
+        } else {
+            newunits = units;
+        }
+        return newunits;
     }
 
     cartCost() {
