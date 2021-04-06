@@ -18,12 +18,12 @@ describe("the cost of", () => {
 
 describe("the cost with markdowns", () => {
     test("one can soup during a $.20 markdown period", () => {
-        store.markdown("soup", .2);
-        expect(store.itemsList.soup).toBeCloseTo(.2);
+        store.setItem("soup", 0.2);
+        expect(store.itemsList.soup).toBeCloseTo(0.2);
     });
 
     test("one can soup after the markdowns are over", () => {
-        store.weeklyReset()
+        store.weeklyReset();
         expect(store.itemsList.soup).toBeCloseTo(1.89);
     });
 });
