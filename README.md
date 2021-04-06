@@ -2,10 +2,8 @@
 
 Personal solution for checkout order total kata.
 
-Current npm scripts:
+This solution requires the latest node as of this writing, v15.13.0, or higher.
 
-format - formats code according to prettier specs
+To install the dependencies, please run `npm install`.
 
-lint - lints code according to eslint specs
-
-test - tests code with jest
+To run the test suite, please run `npm run test`. This will test the code with jest.
