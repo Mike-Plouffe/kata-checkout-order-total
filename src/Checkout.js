@@ -11,12 +11,16 @@ class Checkout {
     }
 
     scan(item, units = 1) {
+        if (!this.store.itemsList[item]) {
+            return false;
+        }
         const current = this.cart[item];
         if (current) {
             this.cart[item] = current + units;
         } else {
             this.cart[item] = units;
         }
+        return true;
     }
 
     remove(item, units = 1) {
@@ -32,6 +36,14 @@ class Checkout {
         } else {
             delete this.cart[item];
         }
+    }
+
+    cartCost() {
+        let total = 0;
+        Object.entries(this.cart).forEach(([item, units]) => {
+            total += this.store.itemsList[item] * units;
+        });
+        return total;
     }
 }
 
