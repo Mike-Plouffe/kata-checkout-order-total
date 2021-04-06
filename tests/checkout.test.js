@@ -1,8 +1,8 @@
 import Checkout from "../src/Checkout.js";
 
-const checkout = new Checkout();
-
 describe("Scanning:", () => {
+    const checkout = new Checkout();
+
     test("the cart initially has no items", () => {
         expect(Object.keys(checkout.cart).length).toBeCloseTo(0);
     });
@@ -36,3 +36,26 @@ describe("Scanning:", () => {
         expect(checkout.cart.soup).toBeCloseTo(1);
     });
 });
+
+describe('calculate the cost of a cart with', () => {
+    const checkout = new Checkout();
+
+    test('the cart initially is free', () => {
+        expect(checkout.cost).toBe(0)
+    })
+    test('1.5lb beef, 2 cans soup, 2.5lb bananas', () => {
+        checkout.scan('beef', 1.5)
+        checkout.scan('soup')
+        checkout.scan('soup')
+        checkout.scan('bananas', 2.5)
+        expect(checkout.cost).toBeCloseTo(1.5 * 5.99 + 2 * 1.89 + 2.5 * 2.38)
+    })
+    test('after marking down soup it should be cheaper', () => {
+        checkout.store.setItem('soup', .2)
+        expect(checkout.cost).toBeCloseTo(1.5 * 5.99 + 2 * .2 + 2.5 * 2.38)
+    })
+    test('after a weekly reset, it should go back to full price', () => {
+        checkout.store.weeklyReset()
+        expect(checkout.cost).toBeCloseTo(1.5 * 5.99 + 2 * 1.89 + 2.5 * 2.38)
+    })
+})
