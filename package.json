@@ -1,0 +1,24 @@
+{
+    "name": "kata-checkout-order-total",
+    "version": "1.0.0",
+    "description": "Point-Of-Sale system for grocery store",
+    "main": "index.js",
+    "type": "module",
+    "engines": {
+        "node": ">=15.13.0"
+    },
+    "scripts": {
+        "test": "NODE_OPTIONS=--experimental-vm-modules jest --verbose",
+        "format": "prettier --write ."
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^7.23.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jest": "^24.3.4",
+        "jest": "^26.6.3",
+        "prettier": "^2.2.1"
+    }
+}
