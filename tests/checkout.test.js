@@ -72,11 +72,34 @@ describe("calculate the cost of a cart with markdowns:", () => {
     });
 });
 
-// describe('calculate the cost of a car with specials', () => {
-//     const checkout = new Checkout()
-//     test('8 cans soup with a Buy 2 Get 1 50% off limit 2 special', () => {
-//         checkout.scan('soup', 8.5)
-//         const cost = checkout.cartCost();
-//         expect(cost).toBeCloseTo(8 * 1.89)
-//     })
-// })
+describe("calculate the cost of a car with specials", () => {
+    const checkout = new Checkout();
+    test("8 cans soup with a Buy 2 Get 1 50% off limit 2 special", () => {
+        checkout.scan("soup", 8);
+        checkout.store.createBuyNGetMAtXOff("soup", 2, 1, 0.5, 2);
+        const cost = checkout.cartCost();
+        expect(cost).toBeCloseTo(6 * 1.89 + 2 * 1.89 * 0.5);
+    });
+    test("11.5 lb of beef with a Buy 3lb get 1lb 20% off limit 3 special", () => {
+        checkout.newCart();
+        checkout.store.weeklyReset();
+        checkout.scan("beef", 11.5);
+        checkout.store.createBuyNGetMAtXOff("beef", 3, 1, 0.2, 3);
+        const cost = checkout.cartCost();
+        expect(cost).toBeCloseTo(8.5 * 5.99 + 3 * 5.99 * 0.8);
+    });
+    test("40 cans of soup with a Buy 3 get 1 free limit 6", () => {
+        checkout.newCart();
+        checkout.store.weeklyReset();
+        checkout.scan("soup", 40);
+        checkout.store.createBuyNForX("soup", 2, 1, 6);
+        const cost = checkout.cartCost();
+        expect(cost).toBeCloseTo(34 * 1.89);
+    });
+    test("40 cans of soup with a Buy 3 get 1 free limit 6 and a markdown on soup of 20 cents", () => {
+        checkout.store.setItem("soup", 0.2);
+        checkout.store.createBuyNForX("soup", 2, 1, 6);
+        const cost = checkout.cartCost();
+        expect(cost).toBeCloseTo(34 * 1.89);
+    });
+});
